@@ -24,6 +24,9 @@ const GlobalStyle = createGlobalStyle`
     h1 {
         font-size: 48px;
     }
+    h2 {
+        font-size: 38px;
+    }
     h3 {
         font-size: 32px;
         font-weight: lighter;
@@ -51,6 +54,10 @@ const GlobalStyle = createGlobalStyle`
         text-align: center;
         font-size: 40px;
         text-transform: uppercase;
+    }
+
+    .backButton {
+        cursor: pointer;
     }
 `;
 

@@ -18,8 +18,11 @@ function ClientHomePage() {
     });
 
     const navigate = useNavigate();
-    const handleCardClick = () => {
-        navigate("/");
+    const navigateToCarInfo = () => {
+        navigate("/car");
+    };
+    const navigateToHistory = () => {
+        navigate("/history");
     };
 
     return (
@@ -75,8 +78,8 @@ function ClientHomePage() {
                     </>
                 )}
             </HomeContainer>
-            <HomeCard text={"Informações do veículo"} onClick={handleCardClick} />
-            <HomeCard text={"Histórico de atendimentos"} onClick={handleCardClick} />
+            <HomeCard text={"Informações do veículo"} onClick={navigateToCarInfo} />
+            <HomeCard text={"Histórico de atendimentos"} onClick={navigateToHistory} />
             <Footer />
         </>
     )

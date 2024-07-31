@@ -2,7 +2,11 @@ import { FaCircle, FaRegCircle } from "react-icons/fa";
 import styled from "styled-components";
 import { useSwipeable } from 'react-swipeable';
 import { useState } from "react";
+import HomeCard from "../components/HomeCard";
 import BoschHands from "../assets/bcs_hands.jpg";
+import { useNavigate } from "react-router-dom";
+import Footer from "../components/Footer";
+import LogoHeader from "../components/LogoHeader";
 
 function ClientHomePage() {
     const [showImage, setShowImage] = useState("false");
@@ -12,8 +16,15 @@ function ClientHomePage() {
     onSwipedRight: () => setShowImage("false"),
     trackMouse: true
     });
+
+    const navigate = useNavigate();
+    const handleCardClick = () => {
+        navigate("/");
+    };
+
     return (
         <>
+            <LogoHeader />
             <h5>Olá, Nome!</h5>
             <HomeContainer {...handlers} showimage={showImage} backgroundimage={BoschHands}>
                 {showImage === "false" ? (
@@ -64,16 +75,25 @@ function ClientHomePage() {
                     </>
                 )}
             </HomeContainer>
+            <HomeCard text={"Informações do veículo"} onClick={handleCardClick} />
+            <HomeCard text={"Histórico de atendimentos"} onClick={handleCardClick} />
+            <Footer />
         </>
     )
 }
 
-const HomeContainer = styled.div`
+interface HomeContainerProps {
+    showimage: string;
+    backgroundimage: string;
+  }
+
+const HomeContainer = styled.div<HomeContainerProps>`
   height: 380px;
   position: relative;
   background-color: ${(props) => (props.showimage === "false" ? "#FF6060" : "transparent")};
   border-radius: 10px;
   margin-top: 15px;
+  margin-bottom: 15px;
   overflow: hidden;
   transition: background-color 0.5s ease;
 

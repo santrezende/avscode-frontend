@@ -4,7 +4,7 @@ import BoschLogo from "../assets/bosch-service-logo";
 function Footer() {
     return(
         <FooterContainer>
-            <BoschLogo/>
+            <BoschLogo />
         </FooterContainer>
     );
 };

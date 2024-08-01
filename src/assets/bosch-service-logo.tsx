@@ -1,6 +1,6 @@
 const BoschLogo = () => {
     return(
-        <svg width="96px" height="96px" viewBox="0 0 96 96" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+        <svg width="60px" height="60px" viewBox="0 0 96 96" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
             <title>bosch-service-logo</title>
             <defs>
                 <polygon id="path-1" points="0.0216541353 0.0721804511 95.9289023 0.0721804511 95.9289023 96 0.0216541353 96"/>

@@ -37,7 +37,7 @@ const CarInfoContainer = styled.div`
   border-radius: 10px;
   padding: 15px;
   h3, h6 {
-    font-weight: 400;
+    font-weight: 300;
     margin-top: 5px;
   }
   h6 {

@@ -25,7 +25,7 @@ const GlobalStyle = createGlobalStyle`
         font-size: 48px;
     }
     h2 {
-        font-size: 38px;
+        font-size: 40px;
     }
     h3 {
         font-size: 32px;
@@ -56,7 +56,7 @@ const GlobalStyle = createGlobalStyle`
         text-transform: uppercase;
     }
 
-    .backButton {
+    .pointer {
         cursor: pointer;
     }
 `;

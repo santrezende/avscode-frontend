@@ -41,7 +41,7 @@ function ServiceCard() {
                 <StyledH6>Avalie o serviço</StyledH6>
                 <StarsContainer>
                     {[...Array(5)].map((_, i) => (
-                        <TfiStar key={i} size={30} />
+                        <TfiStar key={i} size={50} />
                     ))}
                 </StarsContainer>
             </CardBody>

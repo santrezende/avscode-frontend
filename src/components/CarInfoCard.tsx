@@ -6,6 +6,8 @@ function CarInfoCard(){
         <CarInfoContainer>
                 <h3>PXZ8194</h3>
                 <LineDiv />
+                <h6>Nome</h6>
+                <h3>Santiago Rezende</h3>
                 <h6>Modelo</h6>
                 <h3>Jeep Renegade</h3>
                 <h6>Ano</h6>

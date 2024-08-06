@@ -11,7 +11,7 @@ function ClientSignInPage() {
 
     const [insertedPlate, setInsertedPlate] = useState(false);
     const handleClick = () => {
-        if(plate.length === 7) setInsertedPlate(true);
+        if (plate.length === 7) setInsertedPlate(true);
     }
 
     return (
@@ -19,18 +19,18 @@ function ClientSignInPage() {
             {insertedPlate === false ? (
                 <>
                     <Instruction>Digite sua placa</Instruction>
-                    <Input type="text" maxLength={7} value={plate} onChange={handlePlateInput}/>
+                    <Input type="text" maxLength={7} value={plate} onChange={handlePlateInput} />
                     <button onClick={handleClick}>Próximo</button>
                 </>
             ) : (
                 <>
                     <Plate>{plate}</Plate>
                     <Instruction>Digite seu CPF</Instruction>
-                    <Input type="text" maxLength={11} value={cpf} onChange={handleCpfInput}/>
+                    <Input type="text" maxLength={11} value={cpf} onChange={handleCpfInput} />
                     <button>Entrar</button>
                 </>
             )}
-            <Footer/>
+            <Footer />
         </>
     )
 }

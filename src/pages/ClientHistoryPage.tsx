@@ -2,18 +2,18 @@ import styled from "styled-components";
 import HeaderButtons from "../components/HeaderButtons";
 import ServiceCard from "../components/ServiceCard";
 
-function ClientHistoryPage(){
-    return (
-        <>
-            <HeaderButtons />
-            <StyledH2>Histórico</StyledH2>
-            <LineDiv />
-            <ServiceCard />
-            <ServiceCard />
-            <ServiceCard />
-            <ServiceCard />
-        </>
-    );
+function ClientHistoryPage() {
+  return (
+    <>
+      <HeaderButtons />
+      <StyledH2>Histórico</StyledH2>
+      <LineDiv />
+      <ServiceCard />
+      <ServiceCard />
+      <ServiceCard />
+      <ServiceCard />
+    </>
+  );
 };
 
 const StyledH2 = styled.h2`

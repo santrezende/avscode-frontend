@@ -12,9 +12,9 @@ function ClientHomePage() {
     const [showImage, setShowImage] = useState("false");
 
     const handlers = useSwipeable({
-    onSwipedLeft: () => setShowImage("true"),
-    onSwipedRight: () => setShowImage("false"),
-    trackMouse: true
+        onSwipedLeft: () => setShowImage("true"),
+        onSwipedRight: () => setShowImage("false"),
+        trackMouse: true
     });
 
     const navigate = useNavigate();
@@ -39,9 +39,9 @@ function ClientHomePage() {
                                 paddingRight: '2px'
                             }} />
                             <FaRegCircle onClick={() => setShowImage("true")} size={10} style={{
-                            color: '#F2F2F0',
-                            paddingLeft: '2px',
-                            paddingRight: '2px'
+                                color: '#F2F2F0',
+                                paddingLeft: '2px',
+                                paddingRight: '2px'
                             }} />
                         </div>
                     </>
@@ -49,9 +49,9 @@ function ClientHomePage() {
                     <>
                         <div>
                             <FaRegCircle onClick={() => setShowImage("false")} size={10} style={{
-                            color: '#F2F2F0',
-                            paddingLeft: '2px',
-                            paddingRight: '2px'
+                                color: '#F2F2F0',
+                                paddingLeft: '2px',
+                                paddingRight: '2px'
                             }} />
                             <FaCircle size={10} style={{
                                 color: '#F2F2F0',
@@ -65,7 +65,7 @@ function ClientHomePage() {
                     <>
                         <h3>Última troca de óleo:</h3>
                         <h1>NOV/2023</h1>
-                        <div/>
+                        <div />
                         <h3>Próxima troca em</h3>
                         <h1>5 meses</h1>
                         <h6>NOV/2024</h6>
@@ -88,7 +88,7 @@ function ClientHomePage() {
 interface HomeContainerProps {
     showimage: string;
     backgroundimage: string;
-  }
+}
 
 const HomeContainer = styled.div<HomeContainerProps>`
   height: 380px;

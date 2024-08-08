@@ -3,8 +3,9 @@ import styled from "styled-components";
 import Footer from "../components/Footer";
 import { ChangeEvent, useState } from "react";
 import CarInfoCard from "../components/CarInfoCard";
-import { FaCirclePlus, FaHouse } from "react-icons/fa6";
+import { FaCirclePlus } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import OperationalHeader from "../components/OperationalHeader";
 
 function OperationalFindPlatePage() {
     const [plate, setPlate] = useState("");
@@ -38,12 +39,9 @@ function OperationalFindPlatePage() {
                 </FindPlateContainer>
             ) : (
                 <>
-                    <Header>
-                        <LiaAngleLeftSolid size={30} onClick={handleBackClick} />
-                        <FaHouse size={30} onClick={handleHomeClick} />
-                    </Header>
+                    <OperationalHeader handleBackClick={handleBackClick} handleHomeClick={handleHomeClick}/>
                     <CarInfoCard />
-                    <HistoryButton>
+                    <HistoryButton onClick={() => navigate("/auth/history")}>
                         <h5>Histórico de <br/> atendimentos</h5>
                         <LiaAngleRightSolid size={30} className="icon"/>
                     </HistoryButton>
@@ -66,6 +64,7 @@ const HistoryButton = styled.button`
     color: #151515;
     font-weight: 300;
     margin-bottom: 12px;
+    margin-top: 12px;
     height: 80px;
 
     h5 {
@@ -89,13 +88,6 @@ const CreateNewServiceButton = styled.button`
     .icon{
         margin-top: 8px;
     };
-`;
-
-const Header = styled.div`
-    display: flex;
-    justify-content: space-between;
-    padding: 8px;
-    margin-bottom: 8px;
 `;
 
 const FindPlateContainer = styled.div`

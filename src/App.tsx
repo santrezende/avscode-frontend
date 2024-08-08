@@ -7,6 +7,7 @@ import OperationalSignInPage from "./pages/OperationalSignInPage";
 import OperatinalHomePage from "./pages/OperationalHomePage";
 import OperationalFindPlatePage from "./pages/OperationalFindPlatePage";
 import OperationalRegisterPage from "./pages/OperationalRegisterPage";
+import OperationalHistoryPage from "./pages/OperationalHistoryPage";
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
           <Route path="/auth/signin" element={<OperationalSignInPage />} />
           <Route path="/auth/home" element={<OperatinalHomePage />} />
           <Route path="/auth/findplate" element={<OperationalFindPlatePage />} />
+          <Route path="/auth/history" element={<OperationalHistoryPage />} />
           <Route path="/auth/register" element={<OperationalRegisterPage />} />
         </Routes>
       </BrowserRouter>

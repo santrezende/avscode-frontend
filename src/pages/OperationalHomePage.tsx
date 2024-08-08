@@ -4,7 +4,7 @@ import HomeCard from "../components/HomeCard";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 
-function OperatinalHomePage(){
+function OperatinalHomePage() {
     const navigate = useNavigate();
 
     const navigateToFindPlate = () => {
@@ -14,11 +14,11 @@ function OperatinalHomePage(){
         navigate("/auth/register");
     };
 
-    return(
+    return (
         <>
             <LogoHeader />
             <StyledH3>Olá, <br /> Nome</StyledH3>
-            <HomeCard text={"Buscar Placa"} onClick={navigateToFindPlate}/>
+            <HomeCard text={"Buscar Placa"} onClick={navigateToFindPlate} />
             <HomeCard text={"Cadastrar novo veículo"} onClick={navigateToRegister} />
             <Footer />
         </>

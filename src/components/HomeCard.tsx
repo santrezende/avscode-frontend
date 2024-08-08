@@ -7,16 +7,16 @@ interface HomeCardProps {
 }
 
 function HomeCard({ text, onClick }: HomeCardProps) {
-    return(
+    return (
         <CardContainer onClick={onClick}>
-                    <div/>
-                    <div>
-                        <h3>{text}</h3>
-                        <LiaAngleRightSolid style={{
-                            marginBottom: "10px",
-                            marginRight: "10px",
-                        }} size={30} />
-                    </div>
+            <div />
+            <div>
+                <h3>{text}</h3>
+                <LiaAngleRightSolid style={{
+                    marginBottom: "10px",
+                    marginRight: "10px",
+                }} size={30} />
+            </div>
         </CardContainer>
     );
 };

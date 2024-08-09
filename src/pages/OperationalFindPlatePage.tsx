@@ -40,7 +40,7 @@ function OperationalFindPlatePage() {
             ) : (
                 <>
                     <OperationalHeader handleBackClick={handleBackClick} handleHomeClick={handleHomeClick}/>
-                    <CarInfoCard />
+                    <CarInfoCard editable={true} />
                     <HistoryButton onClick={() => navigate("/auth/history")}>
                         <h5>Histórico de <br/> atendimentos</h5>
                         <LiaAngleRightSolid size={30} className="icon"/>

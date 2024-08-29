@@ -21,7 +21,7 @@ function OperatinalHomePage() {
         <>
             <LogoHeader />
             <StyledH3>Olá, <br /> {name}</StyledH3>
-            <HomeCard text={"Buscar placa cadastrada"} onClick={navigateToFindPlate} />
+            <HomeCard text={"Buscar placa"} onClick={navigateToFindPlate} />
             <HomeCard text={"Cadastrar novo veículo"} onClick={navigateToRegister} />
             <Footer />
         </>

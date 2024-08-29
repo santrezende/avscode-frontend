@@ -39,13 +39,15 @@ border-top-left-radius: 10px;
 
 div:nth-of-type(2) {
     display: flex;
+    width: 100%;
+    justify-content: space-between;
     align-items: end;
     h3 {
         font-weight: 300;
         margin-left: 10px;
         margin-bottom: 10px;
+        width: 200px;
     }
-    width: fit-content;
 }
 `;
 

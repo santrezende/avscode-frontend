@@ -24,6 +24,7 @@ function HomeCard({ text, onClick }: HomeCardProps) {
 const CardContainer = styled.div`
 display: flex;
 height: 110px;
+width: auto;
 border-radius: 10px;
 background-color: #FFFFFF;
 margin-bottom: 15px;
@@ -44,6 +45,7 @@ div:nth-of-type(2) {
         margin-left: 10px;
         margin-bottom: 10px;
     }
+    width: fit-content;
 }
 `;
 

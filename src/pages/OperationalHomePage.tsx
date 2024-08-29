@@ -3,6 +3,7 @@ import LogoHeader from "../components/LogoHeader";
 import HomeCard from "../components/HomeCard";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
+import { useOperationalContext } from "../context/OperationalContext";
 
 function OperatinalHomePage() {
     const navigate = useNavigate();
@@ -14,11 +15,13 @@ function OperatinalHomePage() {
         navigate("/auth/register");
     };
 
+    const { name } = useOperationalContext();
+
     return (
         <>
             <LogoHeader />
-            <StyledH3>Olá, <br /> Nome</StyledH3>
-            <HomeCard text={"Buscar Placa"} onClick={navigateToFindPlate} />
+            <StyledH3>Olá, <br /> {name}</StyledH3>
+            <HomeCard text={"Buscar placa cadastrada"} onClick={navigateToFindPlate} />
             <HomeCard text={"Cadastrar novo veículo"} onClick={navigateToRegister} />
             <Footer />
         </>

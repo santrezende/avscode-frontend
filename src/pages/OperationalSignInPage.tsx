@@ -71,7 +71,7 @@ const WarningContainer = styled.div`
     padding-left: 10px;
     padding-top: 15px;
     display: grid;
-`
+`;
 
 
 export default OperationalSignInPage;

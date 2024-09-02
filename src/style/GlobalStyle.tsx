@@ -44,7 +44,6 @@ const GlobalStyle = createGlobalStyle`
     }
     input {
         all: unset;
-        font-size: 20px;
         background-color: #D9D9D9;
         border-radius: 10px;
         outline: none;

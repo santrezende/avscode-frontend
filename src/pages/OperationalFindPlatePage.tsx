@@ -6,6 +6,8 @@ import CarInfoCard from "../components/CarInfoCard";
 import { FaCirclePlus } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import OperationalHeader from "../components/OperationalHeader";
+import api from "../api/api";
+import { useOperationalContext } from "../context/OperationalContext";
 
 function OperationalFindPlatePage() {
     const [plate, setPlate] = useState("");
@@ -14,9 +16,35 @@ function OperationalFindPlatePage() {
     const navigate = useNavigate();
 
     const [insertedPlate, setInsertedPlate] = useState(false);
-    const handleClick = () => {
-        if (plate.length === 7) setInsertedPlate(true);
+    const [searchedPlate, setSearchedPlate] = useState(null);
+
+    const [renderWarning, setRenderWarning] = useState(false);
+
+    const { token } = useOperationalContext();
+    const handleClick = async () => {
+        if (plate.length === 7) {
+            try{
+                const promise = await api.get(`/vehicles/${plate.toUpperCase()}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setSearchedPlate(promise.data);
+                setInsertedPlate(true);
+                setRenderWarning(false);   
+            }
+            catch (error: any) {
+                console.log(error.response.data);
+                setRenderWarning(true);
+            }
+        } else {
+
+        }
     }
+
+    const handleCarInfoUpdate = (updatedCarInfo: any) => {
+        setSearchedPlate(updatedCarInfo);
+    };
 
     const handleBackClick = () => {
         setInsertedPlate(false);
@@ -40,7 +68,7 @@ function OperationalFindPlatePage() {
             ) : (
                 <>
                     <OperationalHeader handleBackClick={handleBackClick} handleHomeClick={handleHomeClick}/>
-                    <CarInfoCard editable={true} />
+                    <CarInfoCard editable={true} carInfo={searchedPlate!} onUpdate={handleCarInfoUpdate} />
                     <HistoryButton onClick={() => navigate("/auth/history")}>
                         <h5>Histórico de <br/> atendimentos</h5>
                         <LiaAngleRightSolid size={30} className="icon"/>
@@ -51,6 +79,12 @@ function OperationalFindPlatePage() {
                     </CreateNewServiceButton>
                 </>
             )}
+            {renderWarning ? (
+                <WarningContainer>
+                    <h4>Placa não encontrada!</h4>
+                    <h5>Tente novamente.</h5>
+                </WarningContainer>
+            ) : ('')}
             <Footer />
         </>
     );
@@ -62,7 +96,7 @@ const HistoryButton = styled.button`
     align-items: center;
     background-color: #D9D9D9;
     color: #151515;
-    font-weight: 300;
+    font-weight: 600;
     margin-bottom: 12px;
     margin-top: 12px;
     height: 80px;
@@ -104,19 +138,14 @@ const Input = styled.input`
     margin-bottom: 8px;
 `;
 
-//     <WarningContainer>
-//         <h4>*Placa não encontrada</h4>
-//         <h6>Tente novamente ou fale com a gente pelo WhatsApp.</h6>
-//     </WarningContainer>
-
-// const WarningContainer = styled.div`
-//     background-color: #FFFFFF;
-//     border-radius: 10px;
-//     height: 140px;
-//     margin-top: 20px;
-//     padding-left: 10px;
-//     padding-top: 15px;
-//     display: grid;
-// `
+const WarningContainer = styled.div`
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    height: 100px;
+    margin-top: 20px;
+    padding-left: 10px;
+    padding-top: 15px;
+    display: grid;
+`;
 
 export default OperationalFindPlatePage;

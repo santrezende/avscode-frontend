@@ -9,6 +9,7 @@ import OperationalFindPlatePage from './pages/OperationalFindPlatePage';
 import OperationalHistoryPage from './pages/OperationalHistoryPage';
 import OperationalRegisterPage from './pages/OperationalRegisterPage';
 import { OperationalProvider } from './context/OperationalContext';
+import OperationalNewServicePage from './pages/OperationalNewServicePage';
 
 const OperationalRoutes = () => (
   <OperationalProvider>
@@ -18,6 +19,7 @@ const OperationalRoutes = () => (
       <Route path="/findplate" element={<OperationalFindPlatePage />} />
       <Route path="/history" element={<OperationalHistoryPage />} />
       <Route path="/register" element={<OperationalRegisterPage />} />
+      <Route path="/newservice" element={<OperationalNewServicePage />} />
     </Routes>
   </OperationalProvider>
 );

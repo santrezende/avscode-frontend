@@ -73,7 +73,7 @@ function OperationalFindPlatePage() {
                         <h5>Histórico de <br/> atendimentos</h5>
                         <LiaAngleRightSolid size={30} className="icon"/>
                     </HistoryButton>
-                    <CreateNewServiceButton>
+                    <CreateNewServiceButton onClick={() => navigate("/auth/newservice", { state: { carInfo: searchedPlate } })}>
                         <FaCirclePlus size={30} className="icon" />
                         <h5>Criar novo atendimento</h5>
                     </CreateNewServiceButton>

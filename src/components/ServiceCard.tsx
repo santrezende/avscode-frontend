@@ -3,7 +3,14 @@ import { LiaAngleDownSolid } from "react-icons/lia";
 import { TfiStar } from "react-icons/tfi";
 import styled from "styled-components";
 
-function ServiceCard() {
+interface ServiceCardProps {
+    serviceDate: string;
+    serviceTitle: string;
+    serviceDescription: string;
+    kilometersDriven: number;
+}
+
+function ServiceCard({ serviceDate, serviceTitle, serviceDescription, kilometersDriven }: ServiceCardProps) {
     const [isOpen, setIsOpen] = useState(false);
     const contentRef = useRef<HTMLDivElement>(null);
 
@@ -19,12 +26,18 @@ function ServiceCard() {
         }
     }, [isOpen]);
 
+    const formattedDate = new Date(serviceDate).toLocaleDateString('pt-BR', {
+      day: 'numeric',
+      month: 'numeric',
+      year: 'numeric'
+  });
+
     return (
         <CardContainer>
             <CardHeader onClick={toggleCard}>
-                <h6>30/09/1999</h6>
+                <h6>{formattedDate}</h6>
                 <div>
-                    <h3>Revisão Geral</h3>
+                    <h3>{serviceTitle}</h3>
                     <IconWrapper isOpen={isOpen}>
                         <LiaAngleDownSolid size={30} />
                     </IconWrapper>
@@ -34,10 +47,10 @@ function ServiceCard() {
             <CardBody ref={contentRef}>
                 <LineDiv />
                 <DescriptionContainer>
-                    <p>Descrição do serviço</p>
+                    <p>{serviceDescription}</p>
                 </DescriptionContainer>
                 <StyledH6>Quilometragem</StyledH6>
-                <h5>76 mil km</h5>
+                <h5>{kilometersDriven} km</h5>
                 <StyledH6>Avalie o serviço</StyledH6>
                 <StarsContainer>
                     {[...Array(5)].map((_, i) => (
@@ -48,7 +61,6 @@ function ServiceCard() {
         </CardContainer>
     );
 }
-
 const CardContainer = styled.div`
   background-color: #FFFFFF;
   border-radius: 10px;

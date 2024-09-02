@@ -63,7 +63,17 @@ function CarInfoCard({ editable = false, carInfo, onUpdate }: CarInfoCardProps) 
 
         if (!newEditingState) {
             try {
-                const { id, ...dataToSend } = editedCarInfo;
+                const dataToSend = {
+                    licensePlate: editedCarInfo.licensePlate,
+                    customerName: editedCarInfo.customerName,
+                    cpf: editedCarInfo.cpf,
+                    model: editedCarInfo.model,
+                    year: editedCarInfo.year,
+                    engine: editedCarInfo.engine,
+                    kilometersDriven: Number(editedCarInfo.kilometersDriven),
+                    lastOilChange: editedCarInfo.lastOilChange
+                };
+                
                 const response = await api.patch(`/vehicles/${editedCarInfo.id}`, dataToSend, {
                     headers: {
                         Authorization: `Bearer ${token}`

@@ -46,6 +46,7 @@ function NewServicePage() {
             serviceDate,
             serviceTitle,
             serviceData,
+            kilometersDriven: Number(kilometersDriven),
             vehicleId: carInfo.id,
         };
 
@@ -55,7 +56,8 @@ function NewServicePage() {
                     Authorization: `Bearer ${token}`
                 }
             });
-            navigate('/auth/history');
+            console.log(newService);
+            navigate('/auth/history', { state: { carInfo } });
         }
         catch (error: any) {
             console.log(error.response.data);

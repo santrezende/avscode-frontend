@@ -1,10 +1,35 @@
 import styled from "styled-components";
 import OperationalHeader from "../components/OperationalHeader";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ServiceCard from "../components/ServiceCard";
+import { useEffect, useState } from "react";
+import api from "../api/api";
+import { useOperationalContext } from "../context/OperationalContext";
 
 function OperationalHistoryPage() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const carInfo = location.state?.carInfo;
+
+    const { token } = useOperationalContext();
+    const [services, setServices] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await api.get(`/services/${carInfo.licensePlate}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setServices(response.data);
+            } catch (error: any) {
+                console.log(error.response.data);
+            }
+        };
+    
+        fetchData();
+    }, [carInfo, token]);
 
     const handleBackClick = () => navigate("/auth/findplate");
     const handleHomeClick = () => navigate("/auth/home")
@@ -14,14 +39,19 @@ function OperationalHistoryPage() {
             <OperationalHeader handleBackClick={handleBackClick} handleHomeClick={handleHomeClick} />
             <StyledH2>Histórico</StyledH2>
             <LineDiv />
-            <StyledH3>PXZ8194</StyledH3>
-            <ServiceCard />
-            <ServiceCard />
-            <ServiceCard />
-            <ServiceCard />
+            <StyledH3>{carInfo.licensePlate}</StyledH3>
+            {services.map((service: any) => (
+                <ServiceCard
+                    key={service.id}
+                    serviceDate={service.serviceDate}
+                    serviceTitle={service.serviceTitle}
+                    serviceDescription={service.serviceData}
+                    kilometersDriven={service.kilometersDriven}
+                />
+            ))}
         </>
     );
-};
+}
 
 const StyledH2 = styled.h2`
     margin-top: 20px;

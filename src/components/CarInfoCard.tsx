@@ -10,6 +10,7 @@ interface CarInfoCardProps {
         id: number;
         licensePlate: string;
         customerName: string;
+        cpf: string;
         model: string;
         year: number;
         engine: string;
@@ -97,6 +98,17 @@ function CarInfoCard({ editable = false, carInfo, onUpdate }: CarInfoCardProps) 
                 />
             ) : (
                 <h3>{carInfo.customerName}</h3>
+            )}
+            <h6>CPF</h6>
+            {isEditing ? (
+                <StyledInput
+                    type="text"
+                    name="customerCpf"
+                    value={editedCarInfo.cpf}
+                    onChange={handleInputChange}
+                />
+            ) : (
+                <h3>{carInfo.cpf}</h3>
             )}
             <h6>Modelo</h6>
             {isEditing ? (

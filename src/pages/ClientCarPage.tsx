@@ -2,19 +2,26 @@ import styled from "styled-components";
 import Footer from "../components/Footer";
 import CarInfoCard from "../components/CarInfoCard";
 import HeaderButtons from "../components/HeaderButtons";
+import { useClientContext } from "../context/ClientContext";
 
-function ClientCarPage(){
+function ClientCarPage() {
+  const { carInfo } = useClientContext();
 
-    return(
-        <>
-            <HeaderButtons />
-            <StyledH2>Informações do veículo</StyledH2>
-            <LineDiv />
-            <CarInfoCard />
-            <Footer />
-        </>
-    );
-};
+  return (
+    <>
+      <HeaderButtons />
+      <StyledH2>Informações do veículo</StyledH2>
+      <LineDiv />
+      {carInfo ? (
+        <CarInfoCard carInfo={carInfo} contextType="client" />
+      ) : (
+        <p>Nenhuma informação do veículo disponível.</p>
+      )}
+      <Footer />
+    </>
+  );
+}
+;
 
 const StyledH2 = styled.h2`
   margin-left: 15px;

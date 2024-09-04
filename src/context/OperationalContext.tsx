@@ -14,7 +14,10 @@ export const OperationalProvider: React.FC<{ children: ReactNode }> = ({ childre
   const [token, setToken] = useState<string>('');
 
   return (
-    <OperationalContext.Provider value={{ name, setName, token, setToken }}>
+    <OperationalContext.Provider value={{ 
+        name, setName, 
+        token, setToken 
+    }}>
       {children}
     </OperationalContext.Provider>
   );

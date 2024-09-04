@@ -3,24 +3,31 @@ import { FaPen, FaSave } from "react-icons/fa";
 import styled from "styled-components";
 import { useOperationalContext } from "../context/OperationalContext";
 import api from "../api/api";
+import { useClientContext } from "../context/ClientContext";
 
 interface CarInfoCardProps {
     editable?: boolean;
-    carInfo: {
+    carInfo?: {
         id: number;
         licensePlate: string;
         customerName: string;
         cpf: string;
         model: string;
-        year: number;
+        year: string;
         engine: string;
         kilometersDriven: number;
         lastOilChange: Date;
     };
     onUpdate?: (updatedCarInfo: any) => void;
+    contextType: 'client' | 'operational';
 }
 
-function CarInfoCard({ editable = false, carInfo, onUpdate }: CarInfoCardProps) {
+function CarInfoCard({ editable = false, carInfo, onUpdate, contextType }: CarInfoCardProps) {
+
+    if (!carInfo) {
+        return <p>No car info available</p>;
+    }
+
     const [isEditing, setIsEditing] = useState(false);
     const [editedCarInfo, setEditedCarInfo] = useState(carInfo);
 
@@ -55,7 +62,7 @@ function CarInfoCard({ editable = false, carInfo, onUpdate }: CarInfoCardProps) 
         });
     };
 
-    const { token } = useOperationalContext();
+    const { token } = contextType === 'operational' ? useOperationalContext() : useClientContext();
 
     const toggleEditing = async () => {
         const newEditingState = !isEditing;
@@ -90,6 +97,7 @@ function CarInfoCard({ editable = false, carInfo, onUpdate }: CarInfoCardProps) 
     };
 
     const formattedDate = new Date(carInfo.lastOilChange).toLocaleDateString('pt-BR', {
+        day: 'numeric',
         month: 'numeric',
         year: 'numeric'
     });

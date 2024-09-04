@@ -47,6 +47,9 @@ function OperationalHistoryPage() {
                     serviceTitle={service.serviceTitle}
                     serviceDescription={service.serviceData}
                     kilometersDriven={service.kilometersDriven}
+                    id={service.id}
+                    rating={service.rating}
+                    contextType="operational"
                 />
             ))}
         </>

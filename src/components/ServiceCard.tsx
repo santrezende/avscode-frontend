@@ -2,15 +2,20 @@ import { useState, useRef, useEffect } from "react";
 import { LiaAngleDownSolid } from "react-icons/lia";
 import { TfiStar } from "react-icons/tfi";
 import styled from "styled-components";
+import api from "../api/api";
+import { useClientContext } from "../context/ClientContext";
 
 interface ServiceCardProps {
     serviceDate: string;
     serviceTitle: string;
     serviceDescription: string;
     kilometersDriven: number;
+    id: number;
+    rating: number;
+    contextType: 'client' | 'operational';
 }
 
-function ServiceCard({ serviceDate, serviceTitle, serviceDescription, kilometersDriven }: ServiceCardProps) {
+function ServiceCard({ serviceDate, serviceTitle, serviceDescription, kilometersDriven, id, rating }: ServiceCardProps) {
     const [isOpen, setIsOpen] = useState(false);
     const contentRef = useRef<HTMLDivElement>(null);
 
@@ -30,7 +35,26 @@ function ServiceCard({ serviceDate, serviceTitle, serviceDescription, kilometers
       day: 'numeric',
       month: 'numeric',
       year: 'numeric'
-  });
+    });
+
+    const [newRating, setNewRating] = useState(rating);
+
+    const handleStarClick = (index: number) => {
+      setNewRating(index + 1);
+    };
+
+    const handleSubmitRating = async () => {
+      const { carInfo } = useClientContext();
+      try{
+        await api.patch(`/services/${id}`, {
+          rating: newRating,
+          licensePlate: carInfo?.licensePlate,
+          cpf: carInfo?.cpf
+        });
+      } catch(error: any) {
+        console.log(error.response.data);
+      }
+    }
 
     return (
         <CardContainer>
@@ -54,13 +78,20 @@ function ServiceCard({ serviceDate, serviceTitle, serviceDescription, kilometers
                 <StyledH6>Avalie o serviço</StyledH6>
                 <StarsContainer>
                     {[...Array(5)].map((_, i) => (
-                        <TfiStar key={i} size={50} />
+                        <TfiStar
+                            key={i}
+                            size={50}
+                            onClick={() => handleStarClick(i)}
+                            style={{ cursor: 'pointer', color: i < newRating ? '#FFD700' : '#ccc' }}  
+                        />
                     ))}
                 </StarsContainer>
+                <button onClick={handleSubmitRating}>Salvar avaliação</button>
             </CardBody>
         </CardContainer>
     );
 }
+
 const CardContainer = styled.div`
   background-color: #FFFFFF;
   border-radius: 10px;
@@ -108,6 +139,10 @@ const CardBody = styled.div`
     font-weight: 400;
     margin-bottom: 12px;
   }
+
+  button {
+    height: 48px;
+  }
 `;
 
 const StyledH6 = styled.h6`
@@ -141,6 +176,7 @@ const DescriptionContainer = styled.div`
 const StarsContainer = styled.div`
   display: flex;
   justify-content: space-around;
+  margin-bottom: 16px;
 `;
 
 export default ServiceCard;

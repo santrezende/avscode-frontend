@@ -98,14 +98,22 @@ function ClientHomePage() {
                             <h3>Última troca de óleo:</h3>
                             <h1>{formattedDate}</h1>
                             <div />
-                            <h3>Próxima troca em</h3>
-                            <h1>{monthsDifference} meses</h1>
-                            <h6>{nextOilChangeFormattedDate}</h6>
+                            {monthsDifference > 0 ? (
+                            <>
+                                <h3>Próxima troca em</h3>
+                                <h1>{monthsDifference} meses</h1>
+                                <h6>{nextOilChangeFormattedDate}</h6>
+                            </>
+                            ) : (
+                            <>
+                                <h4>Nova troca de óleo recomendada! Agende uma visita pelo WhatsApp.</h4>
+                            </>
+                            )}
                         </>
                     ) : (
                         <>
-                            <div>
-                                <h3>Conheça a Bosch</h3>
+                            <div onClick={() => window.location.href = 'https://am.boschcarservice.com/br/pt/'}>
+                                <h3>Conheça a Bosch clicando aqui!</h3>
                             </div>
                         </>
                     )}
@@ -160,9 +168,13 @@ const HomeContainer = styled.div<HomeContainerProps>`
     padding-left: 15px;
   }
 
-  h1, h6 {
+  h1, h6, h4 {
     color: #F2F2F0;
     padding-left: 15px;
+  }
+
+  h4 {
+    font-size: 32px;
   }
 
   div:nth-of-type(1) {
@@ -187,6 +199,7 @@ const HomeContainer = styled.div<HomeContainerProps>`
     h3 {
       color: #151515;
       font-weight: 400;
+      width: auto;
     }
   }
 `;

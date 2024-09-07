@@ -11,6 +11,8 @@ import OperationalRegisterPage from './pages/OperationalRegisterPage';
 import { OperationalProvider } from './context/OperationalContext';
 import OperationalNewServicePage from './pages/OperationalNewServicePage';
 import { ClientProvider } from './context/ClientContext';
+import { ToastContainer } from 'react-toastify';
+import FloatingWhatsApp from './components/FloatingWhatsApp';
 
 const OperationalRoutes = () => (
   <OperationalProvider>
@@ -32,19 +34,22 @@ const ClientRoutes = () => (
       <Route path="/home" element={<ClientHomePage />} />
       <Route path="/car" element={<ClientCarPage />} />
       <Route path="/history" element={<ClientHistoryPage />} />
-      <Route path="/auth/*" element={<OperationalRoutes />} />
     </Routes>
+    <FloatingWhatsApp />
   </ClientProvider>
 )
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/*" element={<ClientRoutes />} />
-        <Route path="/auth/*" element={<OperationalRoutes />} />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <ToastContainer />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/*" element={<ClientRoutes />} />
+          <Route path="/auth/*" element={<OperationalRoutes />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 

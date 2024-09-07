@@ -17,9 +17,22 @@ interface Service {
 
 function ClientHistoryPage() {
 
-  const { carInfo } = useClientContext();
+  const { carInfo, setCarInfo } = useClientContext();
+
+  const getDataByLocalStorage = async () => {
+    const licensePlate = localStorage.getItem('licensePlate');
+    const cpf = localStorage.getItem('cpf')
+    try{
+      const response = await api.post(`/vehicles/${licensePlate}`, { licensePlate, cpf });
+      setCarInfo(response.data);
+      return;
+    } catch (error: any) {
+      console.log(error.response.data)
+    }
+  }
 
   if (!carInfo) {
+    getDataByLocalStorage();
     return <p>Sem informações de histórico disponíveis, tente novamente.</p>;
   }
 
@@ -30,7 +43,6 @@ function ClientHistoryPage() {
         try {
             const response = await api.post(`/services/${carInfo.licensePlate}`, { licensePlate: carInfo.licensePlate.toUpperCase(), cpf: carInfo.cpf });
             setServices(response.data);
-            console.log(response.data)
         } catch (error: any) {
             console.log(error.response.data);
         }

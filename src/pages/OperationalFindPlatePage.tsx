@@ -22,23 +22,19 @@ function OperationalFindPlatePage() {
 
     const { token } = useOperationalContext();
     const handleClick = async () => {
-        if (plate.length === 7) {
-            try{
-                const promise = await api.get(`/vehicles/${plate.toUpperCase()}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                setSearchedPlate(promise.data);
-                setInsertedPlate(true);
-                setRenderWarning(false);   
-            }
-            catch (error: any) {
-                console.log(error.response.data);
-                setRenderWarning(true);
-            }
-        } else {
-
+        try{
+            const promise = await api.get(`/vehicles/${plate.toUpperCase()}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setSearchedPlate(promise.data);
+            setInsertedPlate(true);
+            setRenderWarning(false);   
+        }
+        catch (error: any) {
+            console.log(error.response.data);
+            setRenderWarning(true);
         }
     }
 

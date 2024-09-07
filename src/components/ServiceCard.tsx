@@ -4,6 +4,9 @@ import { TfiStar } from "react-icons/tfi";
 import styled from "styled-components";
 import api from "../api/api";
 import { useClientContext } from "../context/ClientContext";
+import { useOperationalContext } from "../context/OperationalContext";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 interface ServiceCardProps {
     serviceDate: string;
@@ -15,9 +18,10 @@ interface ServiceCardProps {
     contextType: 'client' | 'operational';
 }
 
-function ServiceCard({ serviceDate, serviceTitle, serviceDescription, kilometersDriven, id, rating }: ServiceCardProps) {
+function ServiceCard({ serviceDate, serviceTitle, serviceDescription, kilometersDriven, id, rating, contextType }: ServiceCardProps) {
     const [isOpen, setIsOpen] = useState(false);
     const contentRef = useRef<HTMLDivElement>(null);
+    const { carInfo } = contextType === 'client' ? useClientContext() : useOperationalContext();
 
     const toggleCard = () => {
         setIsOpen(!isOpen);
@@ -44,14 +48,22 @@ function ServiceCard({ serviceDate, serviceTitle, serviceDescription, kilometers
     };
 
     const handleSubmitRating = async () => {
-      const { carInfo } = useClientContext();
-      try{
-        await api.patch(`/services/${id}`, {
-          rating: newRating,
-          licensePlate: carInfo?.licensePlate,
-          cpf: carInfo?.cpf
-        });
-      } catch(error: any) {
+      try {
+        const payload = {
+            rating: newRating,
+            licensePlate: carInfo?.licensePlate,
+            cpf: contextType === 'client' ? carInfo?.cpf : undefined,
+        };
+        
+        await api.patch(`/services/${id}`, payload);
+        toast.success('Avaliação salva com sucesso!', {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          theme: "light"
+          });
+          setIsOpen(!isOpen);
+      } catch (error: any) {
         console.log(error.response.data);
       }
     }

@@ -5,6 +5,7 @@ interface OperationalContextType {
   setName: (name: string) => void;
   token: string;
   setToken: (token: string) => void;
+  carInfo: null;
 }
 
 const OperationalContext = createContext<OperationalContextType | undefined>(undefined);
@@ -12,11 +13,13 @@ const OperationalContext = createContext<OperationalContextType | undefined>(und
 export const OperationalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [name, setName] = useState<string>('');
   const [token, setToken] = useState<string>('');
+  const carInfo = null;
 
   return (
     <OperationalContext.Provider value={{ 
         name, setName, 
-        token, setToken 
+        token, setToken,
+        carInfo
     }}>
       {children}
     </OperationalContext.Provider>

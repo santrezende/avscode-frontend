@@ -6,15 +6,15 @@ import { useNavigate } from "react-router-dom";
 import { useClientContext } from "../context/ClientContext";
 
 function ClientSignInPage() {
-    const [licensePlate, setLicensePlate] = useState("");
-    const handlelicensePlateInput = (event: ChangeEvent<HTMLInputElement>) => setLicensePlate(event.target.value);
+    const [licensePlatePage, setLicensePlatePage] = useState("");
+    const handlelicensePlateInput = (event: ChangeEvent<HTMLInputElement>) => setLicensePlatePage(event.target.value);
 
-    const [cpf, setCpf] = useState("");
-    const handleCpfInput = (event: ChangeEvent<HTMLInputElement>) => setCpf(event.target.value);
+    const [cpfPage, setCpfPage] = useState("");
+    const handleCpfInput = (event: ChangeEvent<HTMLInputElement>) => setCpfPage(event.target.value);
 
     const [insertedlicensePlate, setInsertedlicensePlate] = useState(false);
     const handleNextClick = () => {
-        if (licensePlate.length === 7) {
+        if (licensePlatePage.length === 7) {
             setInsertedlicensePlate(true);
             setRenderWarning(false);
         }
@@ -23,27 +23,33 @@ function ClientSignInPage() {
     const [renderWarning, setRenderWarning] = useState(false);
 
     const navigate = useNavigate();
-    const { setName, setLastOilChange, setCarInfo } = useClientContext();
+    const { setName, setCpf, setLastOilChange, setLicensePlate, setCarInfo } = useClientContext();
 
     const handleSignInClick = async () => {
         try{
-            const response = await api.post(`/vehicles/${licensePlate.toUpperCase()}`, { licensePlate: licensePlate.toUpperCase(), cpf });
+            const response = await api.post(`/vehicles/${licensePlatePage.toUpperCase()}`, { licensePlate: licensePlatePage.toUpperCase(), cpf: cpfPage });
 
             setCarInfo(response.data);
 
             setName(response.data.customerName);
             localStorage.setItem('name', response.data.customerName);
 
+            setCpf(response.data.cpf);
+            localStorage.setItem('cpf', response.data.cpf);
+
             setLastOilChange(response.data.lastOilChange);
             localStorage.setItem('lastOilChange', response.data.lastOilChange);
+
+            setLicensePlate(response.data.licensePlate);
+            localStorage.setItem('licensePlate', response.data.licensePlate);
 
             navigate('/home');
         } catch (error: any) {
             console.log(error.response.data);
             setRenderWarning(true);
             setInsertedlicensePlate(false);
-            setLicensePlate("");
-            setCpf("");
+            setLicensePlatePage("");
+            setCpfPage("");
         }
     }
 
@@ -52,14 +58,14 @@ function ClientSignInPage() {
             {insertedlicensePlate === false ? (
                 <>
                     <Instruction>Digite sua placa</Instruction>
-                    <Input type="text" maxLength={7} value={licensePlate} onChange={handlelicensePlateInput} />
+                    <Input type="text" maxLength={7} value={licensePlatePage} onChange={handlelicensePlateInput} />
                     <button onClick={handleNextClick}>Próximo</button>
                 </>
             ) : (
                 <>
-                    <LicensePlate>{licensePlate}</LicensePlate>
+                    <LicensePlate>{licensePlatePage}</LicensePlate>
                     <Instruction>Digite seu CPF</Instruction>
-                    <Input type="text" maxLength={11} value={cpf} onChange={handleCpfInput} />
+                    <Input type="text" maxLength={11} value={cpfPage} onChange={handleCpfInput} />
                     <button onClick={handleSignInClick}>Entrar</button>
                 </>
             )}

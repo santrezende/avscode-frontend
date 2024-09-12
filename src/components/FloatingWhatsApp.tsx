@@ -1,11 +1,13 @@
-import styled from 'styled-components';
-import { FaWhatsapp } from 'react-icons/fa';
+import styled from "styled-components";
+import { FaWhatsapp } from "react-icons/fa";
 
 const FloatingWhatsApp = () => {
   const handleWhatsAppClick = () => {
-    const message = 'Olá! Estou entrando em contato pelo AVS Code!';
-    const phoneNumber = '5531971921519';
-    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`);
+    const message = "Olá! Estou entrando em contato pelo AVS Code!";
+    const phoneNumber = "5531971921519";
+    window.open(
+      `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`,
+    );
   };
 
   return (
@@ -26,7 +28,7 @@ const WhatsAppButton = styled.div`
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   z-index: 1000;
-  
+
   &:hover {
     opacity: 0.8;
   }

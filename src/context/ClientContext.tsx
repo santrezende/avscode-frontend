@@ -1,16 +1,16 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface CarInfo {
-    id: number;
-    customerName: string;
-    licensePlate: string;
-    cpf: string;
-    model: string;
-    engine: string;
-    kilometersDriven: number;
-    lastOilChange: Date;
-    year: string;
-  }
+  id: number;
+  customerName: string;
+  licensePlate: string;
+  cpf: string;
+  model: string;
+  engine: string;
+  kilometersDriven: number;
+  lastOilChange: Date;
+  year: string;
+}
 
 interface ClientContextType {
   name: string;
@@ -28,23 +28,32 @@ interface ClientContextType {
 
 const ClientContext = createContext<ClientContextType | undefined>(undefined);
 
-export const ClientProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [name, setName] = useState<string>('');
-  const [cpf, setCpf] = useState<string>('');
-  const [lastOilChange, setLastOilChange] = useState('');
-  const [licensePlate, setLicensePlate] = useState<string>('');
+export const ClientProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
+  const [name, setName] = useState<string>("");
+  const [cpf, setCpf] = useState<string>("");
+  const [lastOilChange, setLastOilChange] = useState("");
+  const [licensePlate, setLicensePlate] = useState<string>("");
   const [carInfo, setCarInfo] = useState<CarInfo | undefined>(undefined);
   const token = null;
 
   return (
-    <ClientContext.Provider value={{ 
-        name, setName,
-        cpf, setCpf,
-        lastOilChange, setLastOilChange,
-        licensePlate, setLicensePlate,
-        carInfo, setCarInfo,
-        token, 
-    }}>
+    <ClientContext.Provider
+      value={{
+        name,
+        setName,
+        cpf,
+        setCpf,
+        lastOilChange,
+        setLastOilChange,
+        licensePlate,
+        setLicensePlate,
+        carInfo,
+        setCarInfo,
+        token,
+      }}
+    >
       {children}
     </ClientContext.Provider>
   );
@@ -53,7 +62,7 @@ export const ClientProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 export const useClientContext = (): ClientContextType => {
   const context = useContext(ClientContext);
   if (context === undefined) {
-    throw new Error('useClientContext must be used within an AppProvider');
+    throw new Error("useClientContext must be used within an AppProvider");
   }
   return context;
 };

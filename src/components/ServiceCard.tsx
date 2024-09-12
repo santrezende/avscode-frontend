@@ -6,106 +6,144 @@ import api from "../api/api";
 import { useClientContext } from "../context/ClientContext";
 import { useOperationalContext } from "../context/OperationalContext";
 import { toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 interface ServiceCardProps {
-    serviceDate: string;
-    serviceTitle: string;
-    serviceDescription: string;
-    kilometersDriven: number;
-    id: number;
-    rating: number;
-    contextType: 'client' | 'operational';
+  serviceDate: string;
+  serviceTitle: string;
+  serviceDescription: string;
+  kilometersDriven: number;
+  id: number;
+  rating: number;
+  contextType: "client" | "operational";
 }
 
-function ServiceCard({ serviceDate, serviceTitle, serviceDescription, kilometersDriven, id, rating, contextType }: ServiceCardProps) {
-    const [isOpen, setIsOpen] = useState(false);
-    const contentRef = useRef<HTMLDivElement>(null);
-    const { carInfo } = contextType === 'client' ? useClientContext() : useOperationalContext();
+function ServiceCard({
+  serviceDate,
+  serviceTitle,
+  serviceDescription,
+  kilometersDriven,
+  id,
+  rating,
+  contextType,
+}: ServiceCardProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const { carInfo, token } =
+    contextType === "client" ? useClientContext() : useOperationalContext();
 
-    const toggleCard = () => {
-        setIsOpen(!isOpen);
-    };
+  const toggleCard = () => {
+    setIsOpen(!isOpen);
+  };
 
-    useEffect(() => {
-        if (isOpen && contentRef.current) {
-            contentRef.current.style.maxHeight = `${contentRef.current.scrollHeight}px`;
-        } else if (contentRef.current) {
-            contentRef.current.style.maxHeight = '0px';
-        }
-    }, [isOpen]);
-
-    const formattedDate = new Date(serviceDate).toLocaleDateString('pt-BR', {
-      day: 'numeric',
-      month: 'numeric',
-      year: 'numeric'
-    });
-
-    const [newRating, setNewRating] = useState(rating);
-
-    const handleStarClick = (index: number) => {
-      setNewRating(index + 1);
-    };
-
-    const handleSubmitRating = async () => {
-      try {
-        const payload = {
-            rating: newRating,
-            licensePlate: carInfo?.licensePlate,
-            cpf: contextType === 'client' ? carInfo?.cpf : undefined,
-        };
-        
-        await api.patch(`/services/${id}`, payload);
-        toast.success('Avaliação salva com sucesso!', {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          theme: "light"
-          });
-          setIsOpen(!isOpen);
-      } catch (error: any) {
-        console.log(error.response.data);
-      }
+  useEffect(() => {
+    if (isOpen && contentRef.current) {
+      contentRef.current.style.maxHeight = `${contentRef.current.scrollHeight}px`;
+    } else if (contentRef.current) {
+      contentRef.current.style.maxHeight = "0px";
     }
+  }, [isOpen]);
 
-    return (
-        <CardContainer>
-            <CardHeader onClick={toggleCard}>
-                <h6>{formattedDate}</h6>
-                <div>
-                    <h3>{serviceTitle}</h3>
-                    <IconWrapper isOpen={isOpen}>
-                        <LiaAngleDownSolid size={30} />
-                    </IconWrapper>
-                </div>
-            </CardHeader>
+  const formattedDate = new Date(serviceDate).toLocaleDateString("pt-BR", {
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
+  });
 
-            <CardBody ref={contentRef}>
-                <LineDiv />
-                <DescriptionContainer>
-                    <p>{serviceDescription}</p>
-                </DescriptionContainer>
-                <StyledH6>Quilometragem</StyledH6>
-                <h5>{kilometersDriven} km</h5>
-                <StyledH6>Avalie o serviço</StyledH6>
-                <StarsContainer>
-                    {[...Array(5)].map((_, i) => (
-                        <TfiStar
-                            key={i}
-                            size={50}
-                            onClick={() => handleStarClick(i)}
-                            style={{ cursor: 'pointer', color: i < newRating ? '#FFD700' : '#ccc' }}  
-                        />
-                    ))}
-                </StarsContainer>
-                <button onClick={handleSubmitRating}>Salvar avaliação</button>
-            </CardBody>
-        </CardContainer>
-    );
+  const [newRating, setNewRating] = useState(rating);
+
+  const handleStarClick = (index: number) => {
+    setNewRating(index + 1);
+  };
+
+  const handleSubmitRating = async () => {
+    try {
+      const payload = {
+        rating: newRating,
+        licensePlate: carInfo?.licensePlate,
+        cpf: contextType === "client" ? carInfo?.cpf : undefined,
+      };
+
+      await api.patch(`/services/${id}`, payload);
+      toast.success("Avaliação salva com sucesso!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+      setIsOpen(!isOpen);
+    } catch (error: any) {
+      console.log(error.response.data);
+    }
+  };
+
+  const handleDeleteService = async () => {
+    try {
+      await api.delete(`/services/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token || localStorage.getItem("token")}`,
+        },
+      });
+      toast.success("Serviço deletado com sucesso!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+    } catch (error: any) {
+      console.log(error.response.data);
+    }
+  };
+
+  return (
+    <CardContainer>
+      <CardHeader onClick={toggleCard}>
+        <h6>{formattedDate}</h6>
+        <div>
+          <h3>{serviceTitle}</h3>
+          <IconWrapper isOpen={isOpen}>
+            <LiaAngleDownSolid size={30} />
+          </IconWrapper>
+        </div>
+      </CardHeader>
+
+      <CardBody ref={contentRef}>
+        <LineDiv />
+        <DescriptionContainer>
+          <p>{serviceDescription}</p>
+        </DescriptionContainer>
+        <StyledH6>Quilometragem</StyledH6>
+        <h5>{kilometersDriven} km</h5>
+        {contextType === "client" ? (
+          <>
+            <StyledH6>Avalie o serviço</StyledH6>
+            <StarsContainer>
+              {[...Array(5)].map((_, i) => (
+                <TfiStar
+                  key={i}
+                  size={50}
+                  onClick={() => handleStarClick(i)}
+                  style={{
+                    cursor: "pointer",
+                    color: i < newRating ? "#FFD700" : "#ccc",
+                  }}
+                />
+              ))}
+            </StarsContainer>
+            <button onClick={handleSubmitRating}>Salvar avaliação</button>
+          </>
+        ) : (
+          <DeleteButton onClick={handleDeleteService}>
+            Deletar serviço
+          </DeleteButton>
+        )}
+      </CardBody>
+    </CardContainer>
+  );
 }
 
 const CardContainer = styled.div`
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border-radius: 10px;
   padding: 15px;
   margin-bottom: 20px;
@@ -147,7 +185,8 @@ const CardBody = styled.div`
   transition: max-height 0.3s ease;
   margin-top: 10px;
 
-  h6, h5 {
+  h6,
+  h5 {
     font-weight: 400;
     margin-bottom: 12px;
   }
@@ -172,7 +211,7 @@ const LineDiv = styled.div`
 
 const DescriptionContainer = styled.div`
   height: 125px;
-  background-color: #D9D9D9;
+  background-color: #d9d9d9;
   border-radius: 10px;
   margin-top: -4px;
   margin-bottom: 12px;
@@ -189,6 +228,10 @@ const StarsContainer = styled.div`
   display: flex;
   justify-content: space-around;
   margin-bottom: 16px;
+`;
+
+const DeleteButton = styled.button`
+  background-color: #ff6060;
 `;
 
 export default ServiceCard;

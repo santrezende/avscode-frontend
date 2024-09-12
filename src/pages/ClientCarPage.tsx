@@ -21,8 +21,6 @@ function ClientCarPage() {
     </>
   );
 }
-;
-
 const StyledH2 = styled.h2`
   margin-left: 15px;
   font-weight: 500;
@@ -35,6 +33,5 @@ const LineDiv = styled.div`
   margin-top: 20px;
   margin-bottom: 25px;
 `;
-
 
 export default ClientCarPage;

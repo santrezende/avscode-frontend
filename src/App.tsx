@@ -1,49 +1,64 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ClientSignInPage from './pages/ClientSignInPage';
-import ClientHomePage from './pages/ClientHomePage';
-import ClientCarPage from './pages/ClientCarPage';
-import ClientHistoryPage from './pages/ClientHistoryPage';
-import OperationalSignInPage from './pages/OperationalSignInPage';
-import OperationalHomePage from './pages/OperationalHomePage';
-import OperationalFindPlatePage from './pages/OperationalFindPlatePage';
-import OperationalHistoryPage from './pages/OperationalHistoryPage';
-import OperationalRegisterPage from './pages/OperationalRegisterPage';
-import { OperationalProvider } from './context/OperationalContext';
-import OperationalNewServicePage from './pages/OperationalNewServicePage';
-import { ClientProvider } from './context/ClientContext';
-import { ToastContainer } from 'react-toastify';
-import FloatingWhatsApp from './components/FloatingWhatsApp';
-import PrivateRoute from './components/PrivateRoute';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ClientSignInPage from "./pages/ClientSignInPage";
+import ClientHomePage from "./pages/ClientHomePage";
+import ClientCarPage from "./pages/ClientCarPage";
+import ClientHistoryPage from "./pages/ClientHistoryPage";
+import OperationalSignInPage from "./pages/OperationalSignInPage";
+import OperationalHomePage from "./pages/OperationalHomePage";
+import OperationalFindPlatePage from "./pages/OperationalFindPlatePage";
+import OperationalHistoryPage from "./pages/OperationalHistoryPage";
+import OperationalRegisterPage from "./pages/OperationalRegisterPage";
+import { OperationalProvider } from "./context/OperationalContext";
+import OperationalNewServicePage from "./pages/OperationalNewServicePage";
+import { ClientProvider } from "./context/ClientContext";
+import { ToastContainer } from "react-toastify";
+import FloatingWhatsApp from "./components/FloatingWhatsApp";
+import PrivateRoute from "./components/PrivateRoute";
 
 const OperationalRoutes = () => (
   <OperationalProvider>
     <Routes>
       <Route path="/signin" element={<OperationalSignInPage />} />
-      <Route path="/home" element={
-        <PrivateRoute>
-          <OperationalHomePage />
-        </PrivateRoute>
-      } />
-      <Route path="/register" element={
-        <PrivateRoute>
-          <OperationalRegisterPage />
-        </PrivateRoute>
-      } />
-      <Route path="/findplate" element={
-        <PrivateRoute>
-          <OperationalFindPlatePage />
-        </PrivateRoute>
-      } />
-      <Route path="/newservice" element={
-        <PrivateRoute>
-          <OperationalNewServicePage />
-        </PrivateRoute>
-      } />
-      <Route path="/history" element={
-        <PrivateRoute>
-          <OperationalHistoryPage />
-        </PrivateRoute>
-      } />
+      <Route
+        path="/home"
+        element={
+          <PrivateRoute>
+            <OperationalHomePage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <PrivateRoute>
+            <OperationalRegisterPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/findplate"
+        element={
+          <PrivateRoute>
+            <OperationalFindPlatePage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/newservice"
+        element={
+          <PrivateRoute>
+            <OperationalNewServicePage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/history"
+        element={
+          <PrivateRoute>
+            <OperationalHistoryPage />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   </OperationalProvider>
 );
@@ -58,7 +73,7 @@ const ClientRoutes = () => (
     </Routes>
     <FloatingWhatsApp />
   </ClientProvider>
-)
+);
 
 function App() {
   return (

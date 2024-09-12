@@ -1,6 +1,6 @@
 import { FaCircle, FaRegCircle } from "react-icons/fa";
 import styled from "styled-components";
-import { useSwipeable } from 'react-swipeable';
+import { useSwipeable } from "react-swipeable";
 import { useEffect, useState } from "react";
 import HomeCard from "../components/HomeCard";
 import BoschHands from "../assets/bcs_hands.jpg";
@@ -10,130 +10,163 @@ import LogoHeader from "../components/LogoHeader";
 import { useClientContext } from "../context/ClientContext";
 
 function ClientHomePage() {
-        const [showImage, setShowImage] = useState("false");
+  const [showImage, setShowImage] = useState("false");
 
-        const handlers = useSwipeable({
-            onSwipedLeft: () => setShowImage("true"),
-            onSwipedRight: () => setShowImage("false"),
-            trackMouse: true
-        });
+  const handlers = useSwipeable({
+    onSwipedLeft: () => setShowImage("true"),
+    onSwipedRight: () => setShowImage("false"),
+    trackMouse: true,
+  });
 
-        const navigate = useNavigate();
-        const navigateToCarInfo = () => {
-            navigate("/car");
-        };
-        const navigateToHistory = () => {
-            navigate("/history");
-        };
+  const navigate = useNavigate();
+  const navigateToCarInfo = () => {
+    navigate("/car");
+  };
+  const navigateToHistory = () => {
+    navigate("/history");
+  };
 
-        const { name, lastOilChange } = useClientContext();
+  const { name, lastOilChange } = useClientContext();
 
-        const [date, setDate] = useState<string | Date>(lastOilChange);
+  const [date, setDate] = useState<string | Date>(lastOilChange);
 
-        useEffect(() => {
-            const dateString = localStorage.getItem('lastOilChange');
-            if (dateString) {
-                setDate(new Date(dateString));
-            }
-        }, []);
-        
-        
-        const formattedDate = new Date(date).toLocaleDateString('pt-BR', {
-            month: 'short',
-            year: 'numeric'
-        });
+  useEffect(() => {
+    const dateString = localStorage.getItem("lastOilChange");
+    if (dateString) {
+      setDate(new Date(dateString));
+    }
+  }, []);
 
-        const nextOilChangeDate = new Date(date);
-        nextOilChangeDate.setMonth(nextOilChangeDate.getMonth() + 6);
+  const formattedDate = new Date(date).toLocaleDateString("pt-BR", {
+    month: "short",
+    year: "numeric",
+  });
 
-        const nextOilChangeFormattedDate = nextOilChangeDate.toLocaleDateString('pt-BR', {
-        month: 'short',
-        year: 'numeric'
-        });
+  const nextOilChangeDate = new Date(date);
+  nextOilChangeDate.setMonth(nextOilChangeDate.getMonth() + 6);
 
-        const today = new Date();
-        const monthsDifference = (nextOilChangeDate.getFullYear() - today.getFullYear()) * 12 +
-        nextOilChangeDate.getMonth() - today.getMonth();
+  const nextOilChangeFormattedDate = nextOilChangeDate.toLocaleDateString(
+    "pt-BR",
+    {
+      month: "short",
+      year: "numeric",
+    },
+  );
 
-        const customerName = name || localStorage.getItem('name');
+  const today = new Date();
+  const monthsDifference =
+    (nextOilChangeDate.getFullYear() - today.getFullYear()) * 12 +
+    nextOilChangeDate.getMonth() -
+    today.getMonth();
 
-        return (
-            <>
-                <LogoHeader />
-                <h5>Olá, {customerName}!</h5>
-                <HomeContainer {...handlers} showimage={showImage} backgroundimage={BoschHands}>
-                    {showImage === "false" ? (
-                        <>
-                            <div>
-                                <FaCircle size={10} style={{
-                                    color: '#F2F2F0',
-                                    paddingLeft: '2px',
-                                    paddingRight: '2px'
-                                }} />
-                                <FaRegCircle onClick={() => setShowImage("true")} size={10} style={{
-                                    color: '#F2F2F0',
-                                    paddingLeft: '2px',
-                                    paddingRight: '2px'
-                                }} />
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <div>
-                                <FaRegCircle onClick={() => setShowImage("false")} size={10} style={{
-                                    color: '#F2F2F0',
-                                    paddingLeft: '2px',
-                                    paddingRight: '2px'
-                                }} />
-                                <FaCircle size={10} style={{
-                                    color: '#F2F2F0',
-                                    paddingLeft: '2px',
-                                    paddingRight: '2px'
-                                }} />
-                            </div>
-                        </>
-                    )}
-                    {showImage === "false" ? (
-                        <>
-                            <h3>Última troca de óleo:</h3>
-                            <h1>{formattedDate}</h1>
-                            <div />
-                            {monthsDifference > 0 ? (
-                            <>
-                                <h3>Próxima troca em</h3>
-                                <h1>{monthsDifference} meses</h1>
-                                <h6>{nextOilChangeFormattedDate}</h6>
-                            </>
-                            ) : (
-                            <>
-                                <h4>Nova troca de óleo recomendada! Agende uma visita pelo WhatsApp.</h4>
-                            </>
-                            )}
-                        </>
-                    ) : (
-                        <>
-                            <div onClick={() => window.location.href = 'https://am.boschcarservice.com/br/pt/'}>
-                                <h3>Conheça a Bosch clicando aqui!</h3>
-                            </div>
-                        </>
-                    )}
-                </HomeContainer>
-                <HomeCard text={"Informações do veículo"} onClick={navigateToCarInfo} />
-                <HomeCard text={"Histórico de atendimentos"} onClick={navigateToHistory} />
-                <Footer />
-            </>
-        )
+  const customerName = name || localStorage.getItem("name");
+
+  return (
+    <>
+      <LogoHeader />
+      <h5>Olá, {customerName}!</h5>
+      <HomeContainer
+        {...handlers}
+        showimage={showImage}
+        backgroundimage={BoschHands}
+      >
+        {showImage === "false" ? (
+          <>
+            <div>
+              <FaCircle
+                size={10}
+                style={{
+                  color: "#F2F2F0",
+                  paddingLeft: "2px",
+                  paddingRight: "2px",
+                }}
+              />
+              <FaRegCircle
+                onClick={() => setShowImage("true")}
+                size={10}
+                style={{
+                  color: "#F2F2F0",
+                  paddingLeft: "2px",
+                  paddingRight: "2px",
+                }}
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <div>
+              <FaRegCircle
+                onClick={() => setShowImage("false")}
+                size={10}
+                style={{
+                  color: "#F2F2F0",
+                  paddingLeft: "2px",
+                  paddingRight: "2px",
+                }}
+              />
+              <FaCircle
+                size={10}
+                style={{
+                  color: "#F2F2F0",
+                  paddingLeft: "2px",
+                  paddingRight: "2px",
+                }}
+              />
+            </div>
+          </>
+        )}
+        {showImage === "false" ? (
+          <>
+            <h3>Última troca de óleo:</h3>
+            <h1>{formattedDate}</h1>
+            <div />
+            {monthsDifference > 0 ? (
+              <>
+                <h3>Próxima troca em</h3>
+                <h1>{monthsDifference} meses</h1>
+                <h6>{nextOilChangeFormattedDate}</h6>
+              </>
+            ) : (
+              <>
+                <h4>
+                  Nova troca de óleo recomendada! Agende uma visita pelo
+                  WhatsApp.
+                </h4>
+              </>
+            )}
+          </>
+        ) : (
+          <>
+            <div
+              onClick={() =>
+                (window.location.href = "https://am.boschcarservice.com/br/pt/")
+              }
+            >
+              <h3>Conheça a Bosch clicando aqui!</h3>
+            </div>
+          </>
+        )}
+      </HomeContainer>
+      <HomeCard text={"Informações do veículo"} onClick={navigateToCarInfo} />
+      <HomeCard
+        text={"Histórico de atendimentos"}
+        onClick={navigateToHistory}
+      />
+      <Footer />
+    </>
+  );
 }
 
 interface HomeContainerProps {
-    showimage: string;
-    backgroundimage: string;
+  showimage: string;
+  backgroundimage: string;
 }
 
 const HomeContainer = styled.div<HomeContainerProps>`
   height: 380px;
   position: relative;
-  background-color: ${(props) => (props.showimage === "false" ? "#FF6060" : "transparent")};
+  background-color: ${(props) =>
+    props.showimage === "false" ? "#FF6060" : "transparent"};
   border-radius: 10px;
   margin-top: 15px;
   margin-bottom: 15px;
@@ -147,7 +180,8 @@ const HomeContainer = styled.div<HomeContainerProps>`
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: ${(props) => (props.showimage === "true" ? `url(${props.backgroundimage})` : 'none')};
+    background-image: ${(props) =>
+      props.showimage === "true" ? `url(${props.backgroundimage})` : "none"};
     background-size: cover;
     background-repeat: no-repeat;
     background-position: right;
@@ -156,20 +190,25 @@ const HomeContainer = styled.div<HomeContainerProps>`
     z-index: 0;
   }
 
-  h3, h1, h6, div {
+  h3,
+  h1,
+  h6,
+  div {
     position: relative;
     z-index: 1;
   }
 
   h3 {
-    color: #F2F2F0;
+    color: #f2f2f0;
     width: 170px;
     margin-bottom: 5px;
     padding-left: 15px;
   }
 
-  h1, h6, h4 {
-    color: #F2F2F0;
+  h1,
+  h6,
+  h4 {
+    color: #f2f2f0;
     padding-left: 15px;
   }
 
@@ -185,13 +224,15 @@ const HomeContainer = styled.div<HomeContainerProps>`
   }
 
   div:nth-of-type(2) {
-    background-color: ${(props) => (props.showimage === "false" ? "#F2F2F0" : "rgba(255, 255, 255, 1)")};
+    background-color: ${(props) =>
+      props.showimage === "false" ? "#F2F2F0" : "rgba(255, 255, 255, 1)"};
     height: ${(props) => (props.showimage === "false" ? "2px" : "90px")};
     width: ${(props) => (props.showimage === "false" ? "auto" : "100%")};
     margin: ${(props) => (props.showimage === "false" ? "15px" : "0px")};
     margin-bottom: ${(props) => (props.showimage === "false" ? "25px" : "0px")};
     margin-top: ${(props) => (props.showimage === "false" ? "25px" : "0px")};
-    position: ${(props) => (props.showimage === "false" ? "static" : "absolute")};
+    position: ${(props) =>
+      props.showimage === "false" ? "static" : "absolute"};
     bottom: ${(props) => (props.showimage === "false" ? "auto" : "0")};
     display: flex;
     align-items: center;

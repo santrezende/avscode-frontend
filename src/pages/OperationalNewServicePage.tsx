@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import api from "../api/api";
 import { useOperationalContext } from "../context/OperationalContext";
+import { toast } from "react-toastify";
 
 function NewServicePage() {
     const navigate = useNavigate();
@@ -53,11 +54,11 @@ function NewServicePage() {
         try {
             api.post('services', newService, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token  || localStorage.getItem('token')}`
                 }
             });
-            console.log(newService);
             navigate('/auth/history', { state: { carInfo } });
+            toast.success('Novo atendimento criado com sucesso!');
         }
         catch (error: any) {
             console.log(error.response.data);
@@ -66,7 +67,7 @@ function NewServicePage() {
 
     return (
         <>
-            <LiaAngleLeftSolid size={30} onClick={() => navigate('/auth/findplate')} />
+            <LiaAngleLeftSolid size={30} onClick={() => navigate('/auth/findplate', { state: { carInfo } })} />
             <Container>
                 <h3>{carInfo.licensePlate}</h3>
                 <LineDiv />

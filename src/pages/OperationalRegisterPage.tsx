@@ -4,6 +4,7 @@ import styled from "styled-components";
 import api from "../api/api";
 import { LiaAngleLeftSolid } from "react-icons/lia";
 import { useOperationalContext } from "../context/OperationalContext";
+import { toast } from "react-toastify";
 
 function OperationalRegisterPage() {
     const navigate = useNavigate();
@@ -16,7 +17,11 @@ function OperationalRegisterPage() {
         year: "",
         engine: "",
         kilometersDriven: "",
-        lastOilChange: new Date()
+        lastOilChange: {
+            day: "",
+            month: "",
+            year: ""
+        }
     });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,42 +36,59 @@ function OperationalRegisterPage() {
         }));
     };
 
+    const handleDayChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const day = e.target.value;
+        setCarInfo(prevInfo => ({
+            ...prevInfo,
+            lastOilChange: {
+                ...prevInfo.lastOilChange,
+                day
+            }
+        }));
+    };
+
     const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const month = e.target.value;
-        setCarInfo(prevInfo => {
-            const date = new Date(prevInfo.lastOilChange);
-            date.setMonth(parseInt(month) - 1);
-            return {
-                ...prevInfo,
-                lastOilChange: date
-            };
-        });
+        setCarInfo(prevInfo => ({
+            ...prevInfo,
+            lastOilChange: {
+                ...prevInfo.lastOilChange,
+                month
+            }
+        }));
     };
 
     const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const year = e.target.value;
-        setCarInfo(prevInfo => {
-            const date = new Date(prevInfo.lastOilChange);
-            date.setFullYear(parseInt(year));
-            return {
-                ...prevInfo,
-                lastOilChange: date
-            };
-        });
+        setCarInfo(prevInfo => ({
+            ...prevInfo,
+            lastOilChange: {
+                ...prevInfo.lastOilChange,
+                year
+            }
+        }));
     };
 
     const { token } = useOperationalContext();
 
     const handleSubmit = async () => {
+        const { day, month, year } = carInfo.lastOilChange;
+        const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+        const carInfoToSend = {
+            ...carInfo,
+            lastOilChange: new Date(formattedDate)
+        };
+
         try {
-            await api.post("/vehicles", carInfo, {
+            await api.post("/vehicles", carInfoToSend, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token || localStorage.getItem('token')}`
                 }
             });
             navigate("/auth/home");
+            toast.success('Veículo cadastrado com sucesso!');
         } catch (error: any) {
-            console.error("Error registering vehicle:", error.response.data);
+            console.error("Erro ao registrar veículo:", error.response.data);
         }
     };
 
@@ -91,7 +113,17 @@ function OperationalRegisterPage() {
                 <h6>Quilometragem</h6>
                 <input name="kilometersDriven" type="number" value={carInfo.kilometersDriven} onChange={handleInputChange} />
                 <h6>Última troca de óleo</h6>
-                <StyledSelect name="lastOilChangeMonth" onChange={handleMonthChange}>
+                <StyledSelect name="lastOilChangeDay" value={carInfo.lastOilChange.day} onChange={handleDayChange}>
+                <StyledSelectOption value="">Dia</StyledSelectOption>
+                {Array.from({ length: 31 }, (_, i) => (
+                    <StyledSelectOption key={i + 1} value={i + 1}>
+                        {i + 1}
+                    </StyledSelectOption>
+                ))}
+                </StyledSelect>
+
+                <StyledSelect name="lastOilChangeMonth" value={carInfo.lastOilChange.month} onChange={handleMonthChange}>
+                    <StyledSelectOption value="">Mês</StyledSelectOption>
                     <StyledSelectOption value="01">Janeiro</StyledSelectOption>
                     <StyledSelectOption value="02">Fevereiro</StyledSelectOption>
                     <StyledSelectOption value="03">Março</StyledSelectOption>
@@ -105,7 +137,9 @@ function OperationalRegisterPage() {
                     <StyledSelectOption value="11">Novembro</StyledSelectOption>
                     <StyledSelectOption value="12">Dezembro</StyledSelectOption>
                 </StyledSelect>
-                <StyledSelect name="lastOilChangeYear" onChange={handleYearChange}>
+
+                <StyledSelect name="lastOilChangeYear" value={carInfo.lastOilChange.year} onChange={handleYearChange}>
+                    <StyledSelectOption value="">Ano</StyledSelectOption>
                     <StyledSelectOption value="2021">2021</StyledSelectOption>
                     <StyledSelectOption value="2022">2022</StyledSelectOption>
                     <StyledSelectOption value="2023">2023</StyledSelectOption>
@@ -113,7 +147,7 @@ function OperationalRegisterPage() {
                     <StyledSelectOption value="2025">2025</StyledSelectOption>
                     <StyledSelectOption value="2026">2026</StyledSelectOption>
                 </StyledSelect>
-            </RegisterContainer>
+                </RegisterContainer>
             <button onClick={handleSubmit}>Cadastrar veículo</button>
         </>
     );
@@ -165,6 +199,7 @@ const StyledSelect = styled.select`
     margin-top: 8px;
     line-height: 40px; 
     text-align: center;
+    color: ${({ value }) => (value === "" ? "#999" : "#000")};
 `;
 
 const StyledSelectOption = styled.option`

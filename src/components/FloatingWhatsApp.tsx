@@ -3,7 +3,9 @@ import { FaWhatsapp } from 'react-icons/fa';
 
 const FloatingWhatsApp = () => {
   const handleWhatsAppClick = () => {
-    window.open('https://wa.me/5551999999999', '_blank');
+    const message = 'Olá! Estou entrando em contato pelo AVS Code!';
+    const phoneNumber = '5531971921519';
+    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`);
   };
 
   return (

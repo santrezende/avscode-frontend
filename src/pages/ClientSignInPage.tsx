@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import api from "../api/api";
 import { useNavigate } from "react-router-dom";
 import { useClientContext } from "../context/ClientContext";
+import { toast } from "react-toastify";
 
 function ClientSignInPage() {
     const [licensePlatePage, setLicensePlatePage] = useState("");
@@ -44,6 +45,7 @@ function ClientSignInPage() {
             localStorage.setItem('licensePlate', response.data.licensePlate);
 
             navigate('/home');
+            toast.success('Login realizado com sucesso!');
         } catch (error: any) {
             console.log(error.response.data);
             setRenderWarning(true);

@@ -13,16 +13,37 @@ import OperationalNewServicePage from './pages/OperationalNewServicePage';
 import { ClientProvider } from './context/ClientContext';
 import { ToastContainer } from 'react-toastify';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
+import PrivateRoute from './components/PrivateRoute';
 
 const OperationalRoutes = () => (
   <OperationalProvider>
     <Routes>
       <Route path="/signin" element={<OperationalSignInPage />} />
-      <Route path="/home" element={<OperationalHomePage />} />
-      <Route path="/findplate" element={<OperationalFindPlatePage />} />
-      <Route path="/history" element={<OperationalHistoryPage />} />
-      <Route path="/register" element={<OperationalRegisterPage />} />
-      <Route path="/newservice" element={<OperationalNewServicePage />} />
+      <Route path="/home" element={
+        <PrivateRoute>
+          <OperationalHomePage />
+        </PrivateRoute>
+      } />
+      <Route path="/register" element={
+        <PrivateRoute>
+          <OperationalRegisterPage />
+        </PrivateRoute>
+      } />
+      <Route path="/findplate" element={
+        <PrivateRoute>
+          <OperationalFindPlatePage />
+        </PrivateRoute>
+      } />
+      <Route path="/newservice" element={
+        <PrivateRoute>
+          <OperationalNewServicePage />
+        </PrivateRoute>
+      } />
+      <Route path="/history" element={
+        <PrivateRoute>
+          <OperationalHistoryPage />
+        </PrivateRoute>
+      } />
     </Routes>
   </OperationalProvider>
 );

@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import { ChangeEvent, useState } from "react";
 import CarInfoCard from "../components/CarInfoCard";
 import { FaCirclePlus } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import OperationalHeader from "../components/OperationalHeader";
 import api from "../api/api";
 import { useOperationalContext } from "../context/OperationalContext";
@@ -14,22 +14,25 @@ function OperationalFindPlatePage() {
     const handlePlateInput = (event: ChangeEvent<HTMLInputElement>) => setPlate(event.target.value);
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const { carInfo } = location.state || {}
 
-    const [insertedPlate, setInsertedPlate] = useState(false);
-    const [searchedPlate, setSearchedPlate] = useState(null);
+    const [insertedPlate, setInsertedPlate] = useState(carInfo?.licensePlate ? true : false);
+    const [searchedPlate, setSearchedPlate] = useState(carInfo || null);
 
     const [renderWarning, setRenderWarning] = useState(false);
 
     const { token } = useOperationalContext();
+
     const handleClick = async () => {
         try{
             const promise = await api.get(`/vehicles/${plate.toUpperCase()}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token || localStorage.getItem('token')}`
                 }
             });
             setSearchedPlate(promise.data);
-            setInsertedPlate(true);
+            setInsertedPlate(!insertedPlate);
             setRenderWarning(false);   
         }
         catch (error: any) {
@@ -43,7 +46,7 @@ function OperationalFindPlatePage() {
     };
 
     const handleBackClick = () => {
-        setInsertedPlate(false);
+        setInsertedPlate(!insertedPlate);
         setPlate("");
     }
 

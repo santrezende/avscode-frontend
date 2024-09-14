@@ -4,7 +4,7 @@ import styled from "styled-components";
 import api from "../api/api";
 import { LiaAngleLeftSolid } from "react-icons/lia";
 import { useOperationalContext } from "../context/OperationalContext";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 function OperationalRegisterPage() {
   const navigate = useNavigate();
@@ -199,6 +199,7 @@ function OperationalRegisterPage() {
         </StyledSelect>
       </RegisterContainer>
       <button onClick={handleSubmit}>Cadastrar veículo</button>
+      <ToastContainer />
     </>
   );
 }

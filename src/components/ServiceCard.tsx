@@ -5,8 +5,7 @@ import styled from "styled-components";
 import api from "../api/api";
 import { useClientContext } from "../context/ClientContext";
 import { useOperationalContext } from "../context/OperationalContext";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 
 interface ServiceCardProps {
   serviceDate: string;
@@ -138,6 +137,7 @@ function ServiceCard({
           </DeleteButton>
         )}
       </CardBody>
+      <ToastContainer />
     </CardContainer>
   );
 }

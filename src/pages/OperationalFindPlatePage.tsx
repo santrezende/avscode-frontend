@@ -8,7 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import OperationalHeader from "../components/OperationalHeader";
 import api from "../api/api";
 import { useOperationalContext } from "../context/OperationalContext";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 function OperationalFindPlatePage() {
   const [plate, setPlate] = useState("");
@@ -143,6 +143,7 @@ function OperationalFindPlatePage() {
         ""
       )}
       <Footer />
+      <ToastContainer />
     </>
   );
 }

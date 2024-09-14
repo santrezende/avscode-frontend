@@ -4,7 +4,7 @@ import api from "../api/api.tsx";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useOperationalContext } from "../context/OperationalContext.tsx";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 function OperationalSignInPage() {
   const [email, setEmail] = useState("");
@@ -64,6 +64,7 @@ function OperationalSignInPage() {
           <h5>Tente novamente.</h5>
         </WarningContainer>
       )}
+      <ToastContainer />
     </>
   );
 }

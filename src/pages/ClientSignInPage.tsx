@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import api from "../api/api";
 import { useNavigate } from "react-router-dom";
 import { useClientContext } from "../context/ClientContext";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 function ClientSignInPage() {
   const [licensePlatePage, setLicensePlatePage] = useState("");
@@ -98,6 +98,7 @@ function ClientSignInPage() {
         ""
       )}
       <Footer />
+      <ToastContainer />
     </>
   );
 }

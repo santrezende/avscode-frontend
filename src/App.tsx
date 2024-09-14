@@ -14,6 +14,7 @@ import { ClientProvider } from "./context/ClientContext";
 import { ToastContainer } from "react-toastify";
 import FloatingWhatsApp from "./components/FloatingWhatsApp";
 import PrivateRoute from "./components/PrivateRoute";
+import "react-toastify/dist/ReactToastify.css";
 
 const OperationalRoutes = () => (
   <OperationalProvider>

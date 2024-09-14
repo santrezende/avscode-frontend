@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import api from "../api/api";
 import { useOperationalContext } from "../context/OperationalContext";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 function NewServicePage() {
   const navigate = useNavigate();
@@ -128,6 +128,7 @@ function NewServicePage() {
         </div>
       </Container>
       <button onClick={handleSave}>Salvar alterações</button>
+      <ToastContainer />
     </>
   );
 }

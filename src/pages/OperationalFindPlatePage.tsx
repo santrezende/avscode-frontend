@@ -12,8 +12,8 @@ import { toast, ToastContainer } from "react-toastify";
 
 function OperationalFindPlatePage() {
   const [plate, setPlate] = useState("");
-  const handlePlateInput = (event: ChangeEvent<HTMLInputElement>) =>
-    setPlate(event.target.value);
+  const [suggestedPlates, setSuggestedPlates] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,9 +28,29 @@ function OperationalFindPlatePage() {
 
   const { token } = useOperationalContext();
 
+  const handlePlateInput = async (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value.toUpperCase();
+    setPlate(value);
+
+    if (value.length === 3) {
+        const response = await api.get(`/vehicles/search/${value}`, {
+          headers: {
+            Authorization: `Bearer ${token || localStorage.getItem("token")}`,
+          },
+        });
+
+        const vehiclesArray = response.data.map((vehicle: any) => vehicle.licensePlate);
+
+        setSuggestedPlates(vehiclesArray);
+        setShowSuggestions(true);
+    } else {
+      setShowSuggestions(false);
+    }
+  };
+
   const handleClick = async () => {
     try {
-      const promise = await api.get(`/vehicles/${plate.toUpperCase()}`, {
+      const promise = await api.get(`/vehicles/${plate}`, {
         headers: {
           Authorization: `Bearer ${token || localStorage.getItem("token")}`,
         },
@@ -38,55 +58,23 @@ function OperationalFindPlatePage() {
       setSearchedPlate(promise.data);
       setInsertedPlate(!insertedPlate);
       setRenderWarning(false);
+      setShowSuggestions(false);
     } catch (error: any) {
       console.log(error.response.data);
       setRenderWarning(true);
     }
   };
 
-  const handleCarInfoUpdate = (updatedCarInfo: any) => {
-    setSearchedPlate(updatedCarInfo);
-  };
-
-  const handleBackClick = () => {
-    setInsertedPlate(!insertedPlate);
-    setPlate("");
-  };
-
-  const handleHomeClick = () => {
-    navigate("/auth/home");
-  };
-
-  const handleDelete = async () => {
-    try {
-      await api.delete(`/vehicles/${searchedPlate.id}`, {
-        headers: {
-          Authorization: `Bearer ${token || localStorage.getItem("token")}`,
-        },
-      });
-      toast.success("Veículo deletado com sucesso!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        theme: "light",
-      });
-      navigate("/auth/home");
-    } catch (error: any) {
-      console.log(error.response.data);
-      toast.error("Delete os atendimentos antes de deletar o veículo!", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        theme: "light",
-      });
-    }
+  const handleSuggestionClick = (suggestedPlate: string) => {
+    setPlate(suggestedPlate);
+    setShowSuggestions(false);
   };
 
   return (
     <>
       {!insertedPlate ? (
         <FindPlateContainer>
-          <LiaAngleLeftSolid size={30} onClick={handleHomeClick} />
+          <LiaAngleLeftSolid size={30} onClick={() => navigate("/auth/home")} />
           <h2>
             Buscar <br /> Veículo
           </h2>
@@ -96,19 +84,31 @@ function OperationalFindPlatePage() {
             value={plate}
             onChange={handlePlateInput}
           />
+          {showSuggestions && suggestedPlates.length > 0 && (
+            <SuggestionsContainer>
+              {suggestedPlates.map((suggestedPlate) => (
+                <SuggestionItem
+                  key={suggestedPlate}
+                  onClick={() => handleSuggestionClick(suggestedPlate)}
+                >
+                  {suggestedPlate}
+                </SuggestionItem>
+              ))}
+            </SuggestionsContainer>
+          )}
           <h6>Insira aqui a placa</h6>
           <button onClick={handleClick}>Buscar</button>
         </FindPlateContainer>
       ) : (
         <>
           <OperationalHeader
-            handleBackClick={handleBackClick}
-            handleHomeClick={handleHomeClick}
+            handleBackClick={() => setInsertedPlate(!insertedPlate)}
+            handleHomeClick={() => navigate("/auth/home")}
           />
           <CarInfoCard
             editable={true}
             carInfo={searchedPlate!}
-            onUpdate={handleCarInfoUpdate}
+            onUpdate={(updatedCarInfo) => setSearchedPlate(updatedCarInfo)}
             contextType="operational"
           />
           <HistoryButton
@@ -131,16 +131,28 @@ function OperationalFindPlatePage() {
             <FaCirclePlus size={30} className="icon" />
             <h5>Criar novo atendimento</h5>
           </CreateNewServiceButton>
-          <DeleteButton onClick={handleDelete}>Deletar Veículo</DeleteButton>
+          <DeleteButton onClick={async () => {
+            try {
+              await api.delete(`/vehicles/${searchedPlate.id}`, {
+                headers: {
+                  Authorization: `Bearer ${token || localStorage.getItem("token")}`,
+                },
+              });
+              toast.success("Veículo deletado com sucesso!");
+              navigate("/auth/home");
+            } catch (error) {
+              toast.error("Delete os atendimentos antes de deletar o veículo!");
+            }
+          }}>
+            Deletar Veículo
+          </DeleteButton>
         </>
       )}
-      {renderWarning ? (
+      {renderWarning && (
         <WarningContainer>
           <h4>Placa não encontrada!</h4>
           <h5>Tente novamente.</h5>
         </WarningContainer>
-      ) : (
-        ""
       )}
       <Footer />
       <ToastContainer />
@@ -190,6 +202,8 @@ const FindPlateContainer = styled.div`
   h6 {
     margin-bottom: 12px;
   }
+
+  position: relative;
 `;
 
 const Input = styled.input`
@@ -209,6 +223,24 @@ const WarningContainer = styled.div`
 const DeleteButton = styled.button`
   background-color: #ff6060;
   margin-top: 12px;
+`;
+
+const SuggestionsContainer = styled.div`
+  background-color: #D9D9D9;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  z-index: 1000;
+  width: 100%;
+  position: absolute;
+  margin-top: -16px;
+`;
+
+const SuggestionItem = styled.div`
+  padding: 10px;
+  cursor: pointer;
+  &:hover {
+    background-color: #f0f0f0;
+  }
 `;
 
 export default OperationalFindPlatePage;

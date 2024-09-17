@@ -91,6 +91,7 @@ function OperationalRegisterPage() {
       toast.success("Veículo cadastrado com sucesso!");
     } catch (error: any) {
       console.error("Erro ao registrar veículo:", error.response.data);
+      toast.error(error.response.data.message[0])
     }
   };
 

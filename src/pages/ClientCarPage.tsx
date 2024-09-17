@@ -3,9 +3,30 @@ import Footer from "../components/Footer";
 import CarInfoCard from "../components/CarInfoCard";
 import HeaderButtons from "../components/HeaderButtons";
 import { useClientContext } from "../context/ClientContext";
+import api from "../api/api";
 
 function ClientCarPage() {
-  const { carInfo } = useClientContext();
+  const { carInfo, setCarInfo } = useClientContext();
+
+  const getDataByLocalStorage = async () => {
+    const licensePlate = localStorage.getItem("licensePlate");
+    const cpf = localStorage.getItem("cpf");
+    try {
+      const response = await api.post(`/vehicles/${licensePlate}`, {
+        licensePlate,
+        cpf,
+      });
+      setCarInfo(response.data);
+      return;
+    } catch (error: any) {
+      console.log(error.response.data);
+    }
+  };
+
+  if (!carInfo) {
+    getDataByLocalStorage();
+    return <p>Sem informações do veículo disponíveis, tente novamente.</p>;
+  }
 
   return (
     <>

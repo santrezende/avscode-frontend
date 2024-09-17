@@ -13,10 +13,6 @@ interface CarInfo {
 }
 
 interface ClientContextType {
-  name: string;
-  setName: (name: string) => void;
-  cpf: string;
-  setCpf: (cpf: string) => void;
   lastOilChange: string;
   setLastOilChange: (lastOilChange: string) => void;
   licensePlate: string;
@@ -31,8 +27,6 @@ const ClientContext = createContext<ClientContextType | undefined>(undefined);
 export const ClientProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [name, setName] = useState<string>("");
-  const [cpf, setCpf] = useState<string>("");
   const [lastOilChange, setLastOilChange] = useState("");
   const [licensePlate, setLicensePlate] = useState<string>("");
   const [carInfo, setCarInfo] = useState<CarInfo | undefined>(undefined);
@@ -41,10 +35,6 @@ export const ClientProvider: React.FC<{ children: ReactNode }> = ({
   return (
     <ClientContext.Provider
       value={{
-        name,
-        setName,
-        cpf,
-        setCpf,
         lastOilChange,
         setLastOilChange,
         licensePlate,

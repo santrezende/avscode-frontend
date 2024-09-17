@@ -26,7 +26,7 @@ function ClientSignInPage() {
   const [renderWarning, setRenderWarning] = useState(false);
 
   const navigate = useNavigate();
-  const { setName, setCpf, setLastOilChange, setLicensePlate, setCarInfo } =
+  const { setLastOilChange, setLicensePlate, setCarInfo } =
     useClientContext();
 
   const handleSignInClick = async () => {
@@ -38,10 +38,7 @@ function ClientSignInPage() {
 
       setCarInfo(response.data);
 
-      setName(response.data.customerName);
       localStorage.setItem("name", response.data.customerName);
-
-      setCpf(response.data.cpf);
       localStorage.setItem("cpf", response.data.cpf);
 
       setLastOilChange(response.data.lastOilChange);

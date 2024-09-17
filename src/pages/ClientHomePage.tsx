@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import LogoHeader from "../components/LogoHeader";
 import { useClientContext } from "../context/ClientContext";
+import api from "../api/api";
 
 function ClientHomePage() {
   const [showImage, setShowImage] = useState("false");
@@ -19,18 +20,28 @@ function ClientHomePage() {
   });
 
   const navigate = useNavigate();
-  const navigateToCarInfo = () => {
-    navigate("/car");
-  };
-  const navigateToHistory = () => {
-    navigate("/history");
-  };
 
-  const { name, lastOilChange } = useClientContext();
+  const { lastOilChange, carInfo, setCarInfo } = useClientContext();
 
-  const [date, setDate] = useState<string | Date>(lastOilChange);
+  const [date, setDate] = useState<string | Date >(lastOilChange);
+
+  const getDataByLocalStorage = async () => {
+    const licensePlate = localStorage.getItem("licensePlate");
+    const cpf = localStorage.getItem("cpf");
+    try {
+      const response = await api.post(`/vehicles/${licensePlate}`, {
+        licensePlate,
+        cpf,
+      });
+      setCarInfo(response.data);
+      return;
+    } catch (error: any) {
+        return <p>Sem informações do veículo disponíveis, tente novamente.</p>
+    }
+  };
 
   useEffect(() => {
+    getDataByLocalStorage();
     const dateString = localStorage.getItem("lastOilChange");
     if (dateString) {
       setDate(new Date(dateString));
@@ -59,7 +70,7 @@ function ClientHomePage() {
     nextOilChangeDate.getMonth() -
     today.getMonth();
 
-  const customerName = name || localStorage.getItem("name");
+  const customerName = carInfo?.customerName || localStorage.getItem("name");
 
   return (
     <>
@@ -147,10 +158,10 @@ function ClientHomePage() {
           </>
         )}
       </HomeContainer>
-      <HomeCard text={"Informações do veículo"} onClick={navigateToCarInfo} />
+      <HomeCard text={"Informações do veículo"} onClick={() => navigate("/car")} />
       <HomeCard
         text={"Histórico de atendimentos"}
-        onClick={navigateToHistory}
+        onClick={() => navigate("/history")}
       />
       <Footer />
     </>

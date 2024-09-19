@@ -15,6 +15,7 @@ import { ToastContainer } from "react-toastify";
 import FloatingWhatsApp from "./components/FloatingWhatsApp";
 import PrivateRoute from "./components/PrivateRoute";
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
 
 const OperationalRoutes = () => (
   <OperationalProvider>
@@ -77,6 +78,20 @@ const ClientRoutes = () => (
 );
 
 function App() {
+  useEffect(() => {
+    const checkAndClearLocalStorage = () => {
+      const lastClear = localStorage.getItem('lastClear');
+      const oneDay = 24 * 60 * 60 * 1000;
+      const now = new Date().getTime();
+
+      if (!lastClear || now - parseInt(lastClear) > oneDay) {
+        localStorage.clear();
+        localStorage.setItem('lastClear', now.toString());
+      }
+    };
+
+    checkAndClearLocalStorage();
+  }, []);
   return (
     <>
       <ToastContainer />
